@@ -1,0 +1,70 @@
+### Reflashing the main board ZNP-K1 v1.0
+[[https://github.com/OpenNeptune3D/Armbian-ZNP-K1-build?tab=readme-ov-file#building-the-image]]
+
+1 - 
+git clone --depth=1 -b main https://github.com/halfmanbear/Armbian-ZNP-K1-build.git
+
+2 - 
+Navigate to the Repo Directory in the board
+
+3 - (With Desktop Build)
+./compile.sh BOARD=znp-k1 BRANCH=edge RELEASE=bookworm BSPFREEZE=yes BUILD_MINIMAL=no BUILD_DESKTOP=yes KERNEL_CONFIGURE=no EXTRAWIFI=yes INSTALL_HEADERS=yes VENDOR=OpenNept4une COMPRESS_OUTPUTIMAGE=xz
+
+#### 4 - Connecting via Serial
+
+Identify the serial device name with ls /dev/tty.* before and after plugging in the device
+Use screen /dev/tty.devicename baudrate to connect
+Exit screen with Ctrl+A, K, Y
+
+#### 4x - Configure WiFi:
+To configure WiFi run the following command.
+sudo nmtui
+Select Edit a Connection, and press enter.
+Right arrow to <Add>, and press enter.
+Down arrow to Wi-Fi, and press enter.
+Give the profile a name, like Home or Work, then skip down to the SSID (this is your network name).
+At Security, choose WPA & WPA2 Personal, then add your password. (this security should be correct for most setups)
+Leave the IPv4 and IPv6 on automatic, and select Ok.
+Select Back and then Quit.
+Once connected, consider logging into your WiFi router and enabling a static IP address for your printer. This will prevent the IP address from changing over time. (usually within DHCP settings).
+
+##### Timezone Configuration:
+Set the correct timezone through Armbian configuration:
+sudo armbian-config
+Navigate to Personal > Timezone to set your zone.
+Exit the menu then reboot your printer with;
+sudo reboot
+Update pre-loaded plugins
+Execute the Kiauh script (you may have to run the command again after it updates itself):
+~/kiauh/kiauh.sh
+Select menu Option 2, update all programs. It will take a while to check for updates on the first boot.
+Type (a) for [Update all] when prompted by ####### Perform action:, then exit kiauh once complete.
+Update and run the OpenNept4une script: Copy and paste the following command into the terminal
+cd ~/OpenNept4une/ && git remote set-url origin https://github.com/OpenNeptune3D/OpenNept4une.git && git fetch --all && git reset --hard origin/main && git clean -fd
+Followed by
+~/OpenNept4une/OpenNept4une.sh
+Select Option (1) to install the latest printer configurations and accept updates to other configurations as prompted, accept the reboot prompt.
+
+___
+
+Initial Configurations & Updates
+Timezone Configuration:
+Set the correct timezone through Armbian configuration:
+sudo armbian-config
+Navigate to Personal > Timezone to set your zone.
+Exit the menu then reboot your printer with;
+sudo reboot
+Update pre-loaded plugins
+Execute the Kiauh script (you may have to run the command again after it updates itself):
+~/kiauh/kiauh.sh
+Select menu Option 2, update all programs. It will take a while to check for updates on the first boot.
+Type (a) for [Update all] when prompted by ####### Perform action:, then exit kiauh once complete.
+Update and run the OpenNept4une script: Copy and paste the following command into the terminal
+cd ~/OpenNept4une/ && git remote set-url origin https://github.com/OpenNeptune3D/OpenNept4une.git && git fetch --all && git reset --hard origin/main && git clean -fd
+Followed by
+~/OpenNept4une/OpenNept4une.sh
+Select Option (1) to install the latest printer configurations and accept updates to other configurations as prompted, accept the reboot prompt.
+
+___
+
+https://github.com/OpenNeptune3D/OpenNept4une/wiki
